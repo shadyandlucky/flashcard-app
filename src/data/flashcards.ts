@@ -1,5 +1,7 @@
 import type { Flashcard } from './types';
+import { isCategory } from './types';
 
+/** Static flashcard set: animals, food, verbs. Used by study and (later) quiz. */
 export const flashcards: Flashcard[] = [
   // Animals
   {
@@ -113,3 +115,8 @@ export const flashcards: Flashcard[] = [
     },
   },
 ];
+
+/** Returns flashcards for the given category, or empty array if category is invalid. */
+export function getCardsByCategory(category: string | undefined): Flashcard[] {
+  return isCategory(category) ? flashcards.filter((c) => c.category === category) : [];
+}

@@ -4,7 +4,7 @@ test.describe('Home page', () => {
   test('displays welcome and navigation options', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { name: 'Spanish Flashcards' })).toBeVisible();
-    await expect(page.getByText('Welcome! Choose how you want to practice.')).toBeVisible();
+    await expect(page.getByText('Choose how you want to practice.')).toBeVisible();
     await expect(page.getByRole('link', { name: 'Study Mode' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Quiz Mode' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Stats Page' })).toBeVisible();
