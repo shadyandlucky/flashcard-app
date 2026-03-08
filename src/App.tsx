@@ -1,19 +1,20 @@
 import { Routes, Route } from 'react-router-dom';
+import { ROUTES } from './constants';
 import HomePage from './pages/HomePage';
 import CategorySelectionPage from './pages/CategorySelectionPage';
 import StudyPage from './pages/StudyPage';
 import StatsPage from './pages/StatsPage';
 
+/** Root router: home, category selection (study/quiz), study session, stats, and quiz placeholder. */
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/study/category" element={<CategorySelectionPage />} />
-      <Route path="/quiz/category" element={<CategorySelectionPage />} />
-      <Route path="/stats" element={<StatsPage />} />
-      {/* Placeholder routes for Phase 2+ (category selection navigates here) */}
-      <Route path="/study/category/:category" element={<StudyPage />} />
-      <Route path="/quiz/category/:category" element={<div>Quiz session — Phase 4</div>} />
+      <Route path={ROUTES.HOME} element={<HomePage />} />
+      <Route path={ROUTES.STUDY_CATEGORY} element={<CategorySelectionPage />} />
+      <Route path={ROUTES.QUIZ_CATEGORY} element={<CategorySelectionPage />} />
+      <Route path={ROUTES.STATS} element={<StatsPage />} />
+      <Route path={ROUTES.STUDY_CATEGORY_PARAM} element={<StudyPage />} />
+      <Route path={ROUTES.QUIZ_CATEGORY_PARAM} element={<div>Quiz session — Phase 4</div>} />
     </Routes>
   );
 }

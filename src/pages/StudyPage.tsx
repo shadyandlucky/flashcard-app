@@ -1,23 +1,32 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { flashcards } from '../data/flashcards';
-import type { Flashcard } from '../data/types';
+import { ROUTES } from '../constants';
+import { getCardsByCategory } from '../data/flashcards';
+import { isCategory, CATEGORY_LABELS, type Flashcard } from '../data/types';
 import FlashcardComponent from '../components/Flashcard';
+import {
+  pageMain,
+  pageMainNarrow,
+  heading,
+  subtextTight,
+  subtextSmall,
+  navColumnTight,
+  buttonLinkSmall,
+  linkSecondary,
+} from '../styles';
 
-const categoryLabels: Record<string, string> = {
-  animals: 'Animals',
-  food: 'Food',
-  verbs: 'Verbs',
-};
-
+/**
+ * Study session for one category: flip cards, mark Right/Wrong, track wrong cards.
+ * Shows invalid state, session-complete state, or the current card.
+ */
 export default function StudyPage() {
   const { category } = useParams<{ category: string }>();
   const [wrongCards, setWrongCards] = useState<Flashcard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const categoryCards = flashcards.filter((c) => c.category === category);
-  const isValidCategory = category && ['animals', 'food', 'verbs'].includes(category);
+  const categoryCards = getCardsByCategory(category);
+  const isValidCategory = isCategory(category);
   const currentCard = isValidCategory ? categoryCards[currentIndex] : undefined;
   const isDone = isValidCategory && currentIndex >= categoryCards.length;
 
@@ -34,9 +43,9 @@ export default function StudyPage() {
 
   if (!isValidCategory) {
     return (
-      <main style={{ padding: '2rem', maxWidth: '32rem', margin: '0 auto' }}>
+      <main style={pageMain}>
         <p>Invalid category.</p>
-        <Link to="/study/category" style={{ color: '#94a3b8', textDecoration: 'underline' }}>
+        <Link to={ROUTES.STUDY_CATEGORY} style={linkSecondary}>
           ← Back to categories
         </Link>
       </main>
@@ -44,32 +53,21 @@ export default function StudyPage() {
   }
 
   if (isDone) {
+    const label = CATEGORY_LABELS[category];
     return (
-      <main style={{ padding: '2rem', maxWidth: '32rem', margin: '0 auto' }}>
-        <h1 style={{ marginBottom: '0.5rem' }}>Session complete</h1>
-        <p style={{ color: '#888', marginBottom: '1.5rem' }}>
-          You reviewed all {categoryCards.length} cards in {categoryLabels[category] ?? category}.
+      <main style={pageMain}>
+        <h1 style={heading}>Session complete</h1>
+        <p style={subtextTight}>
+          You reviewed all {categoryCards.length} cards in {label}.
           {wrongCards.length > 0 && (
             <span> {wrongCards.length} marked as wrong (Redo mode in Phase 3).</span>
           )}
         </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          <Link
-            to="/study/category"
-            style={{
-              display: 'block',
-              padding: '0.75rem 1.25rem',
-              background: '#374151',
-              color: 'white',
-              borderRadius: '8px',
-              textDecoration: 'none',
-              fontWeight: 600,
-              textAlign: 'center',
-            }}
-          >
+        <div style={navColumnTight}>
+          <Link to={ROUTES.STUDY_CATEGORY} style={buttonLinkSmall}>
             Study another category
           </Link>
-          <Link to="/" style={{ color: '#94a3b8', textDecoration: 'underline' }}>
+          <Link to={ROUTES.HOME} style={linkSecondary}>
             ← Back to Home
           </Link>
         </div>
@@ -77,20 +75,30 @@ export default function StudyPage() {
     );
   }
 
+  // No card at current index (e.g. empty category)
+  if (!currentCard) {
+    return (
+      <main style={pageMain}>
+        <p>No cards in this category.</p>
+        <Link to={ROUTES.STUDY_CATEGORY} style={linkSecondary}>← Back to categories</Link>
+      </main>
+    );
+  }
+
   return (
-    <main style={{ padding: '2rem', maxWidth: '28rem', margin: '0 auto' }}>
-      <p style={{ color: '#888', marginBottom: '1rem' }}>
-        {categoryLabels[category] ?? category} — Card {currentIndex + 1} of {categoryCards.length}
+    <main style={pageMainNarrow}>
+      <p style={subtextSmall}>
+        {CATEGORY_LABELS[category]} — Card {currentIndex + 1} of {categoryCards.length}
       </p>
       <FlashcardComponent
-        card={currentCard!}
+        card={currentCard}
         isFlipped={isFlipped}
         onFlip={() => setIsFlipped(true)}
         onRight={handleRight}
         onWrong={handleWrong}
       />
       <p>
-        <Link to="/study/category" style={{ color: '#94a3b8', textDecoration: 'underline' }}>
+        <Link to={ROUTES.STUDY_CATEGORY} style={linkSecondary}>
           ← Back to categories
         </Link>
       </p>

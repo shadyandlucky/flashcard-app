@@ -1,56 +1,29 @@
 import { Link } from 'react-router-dom';
+import { ROUTES } from '../constants';
+import {
+  pageMain,
+  heading,
+  subtext,
+  navColumn,
+  buttonLinkStudy,
+  buttonLinkQuiz,
+  buttonLinkStats,
+} from '../styles';
 
+/** Landing page: app title and links to Study, Quiz, and Stats. */
 export default function HomePage() {
   return (
-    <main style={{ padding: '2rem', maxWidth: '32rem', margin: '0 auto' }}>
-      <h1 style={{ marginBottom: '0.5rem' }}>Spanish Flashcards</h1>
-      <p style={{ color: '#888', marginBottom: '2rem' }}>
-        Welcome! Choose how you want to practice.
-      </p>
-      <nav style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <Link
-          to="/study/category"
-          style={{
-            display: 'block',
-            padding: '1rem 1.5rem',
-            background: '#3b82f6',
-            color: 'white',
-            borderRadius: '8px',
-            textDecoration: 'none',
-            fontWeight: 600,
-            textAlign: 'center',
-          }}
-        >
+    <main style={pageMain}>
+      <h1 style={heading}>Spanish Flashcards</h1>
+      <p style={subtext}>Choose how you want to practice.</p>
+      <nav style={navColumn}>
+        <Link to={ROUTES.STUDY_CATEGORY} style={buttonLinkStudy}>
           Study Mode
         </Link>
-        <Link
-          to="/quiz/category"
-          style={{
-            display: 'block',
-            padding: '1rem 1.5rem',
-            background: '#8b5cf6',
-            color: 'white',
-            borderRadius: '8px',
-            textDecoration: 'none',
-            fontWeight: 600,
-            textAlign: 'center',
-          }}
-        >
+        <Link to={ROUTES.QUIZ_CATEGORY} style={buttonLinkQuiz}>
           Quiz Mode
         </Link>
-        <Link
-          to="/stats"
-          style={{
-            display: 'block',
-            padding: '1rem 1.5rem',
-            background: '#059669',
-            color: 'white',
-            borderRadius: '8px',
-            textDecoration: 'none',
-            fontWeight: 600,
-            textAlign: 'center',
-          }}
-        >
+        <Link to={ROUTES.STATS} style={buttonLinkStats}>
           Stats Page
         </Link>
       </nav>

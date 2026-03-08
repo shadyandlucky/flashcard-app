@@ -1,49 +1,36 @@
 import { Link, useLocation } from 'react-router-dom';
-import { CATEGORIES } from '../data/types';
+import { ROUTES, categorySessionPath } from '../constants';
+import { CATEGORIES, CATEGORY_LABELS } from '../data/types';
+import { pageMain, heading, subtext, navColumn, buttonLink, linkSecondary, topSpacer } from '../styles';
 
-const categoryLabels: Record<string, string> = {
-  animals: 'Animals',
-  food: 'Food',
-  verbs: 'Verbs',
-};
-
+/**
+ * Lets the user pick a category (Animals, Food, Verbs) for study or quiz.
+ * Mode (study vs quiz) is inferred from the current path.
+ */
 export default function CategorySelectionPage() {
   const { pathname } = useLocation();
   const isStudy = pathname.startsWith('/study');
-  const basePath = isStudy ? '/study' : '/quiz';
+  const mode = isStudy ? 'study' : 'quiz';
 
   return (
-    <main style={{ padding: '2rem', maxWidth: '32rem', margin: '0 auto' }}>
-      <h1 style={{ marginBottom: '0.5rem' }}>
+    <main style={pageMain}>
+      <h1 style={heading}>
         {isStudy ? 'Study Mode' : 'Quiz Mode'} — Choose a category
       </h1>
-      <p style={{ color: '#888', marginBottom: '2rem' }}>
+      <p style={subtext}>
         {isStudy
           ? 'Pick a category to study with flashcards.'
           : 'Pick a category for your quiz.'}
       </p>
-      <nav style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <nav style={navColumn}>
         {CATEGORIES.map((cat) => (
-          <Link
-            key={cat}
-            to={`${basePath}/category/${cat}`}
-            style={{
-              display: 'block',
-              padding: '1rem 1.5rem',
-              background: '#374151',
-              color: 'white',
-              borderRadius: '8px',
-              textDecoration: 'none',
-              fontWeight: 600,
-              textAlign: 'center',
-            }}
-          >
-            {categoryLabels[cat] ?? cat}
+          <Link key={cat} to={categorySessionPath(mode, cat)} style={buttonLink}>
+            {CATEGORY_LABELS[cat]}
           </Link>
         ))}
       </nav>
-      <p style={{ marginTop: '2rem' }}>
-        <Link to="/" style={{ color: '#94a3b8', textDecoration: 'underline' }}>
+      <p style={topSpacer}>
+        <Link to={ROUTES.HOME} style={linkSecondary}>
           ← Back to Home
         </Link>
       </p>

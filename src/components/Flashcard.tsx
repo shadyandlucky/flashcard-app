@@ -8,9 +8,13 @@ interface FlashcardProps {
   onWrong: () => void;
 }
 
+/**
+ * Single flashcard: front (Spanish), back (English). Click to flip; then Right/Wrong buttons.
+ */
 export default function Flashcard({ card, isFlipped, onFlip, onRight, onWrong }: FlashcardProps) {
   return (
     <div style={{ perspective: '1000px', marginBottom: '1.5rem' }}>
+      {/* Flip trigger: click or Enter/Space to reveal English; keyboard keeps it accessible. */}
       <div
         role="button"
         tabIndex={0}
@@ -62,6 +66,7 @@ export default function Flashcard({ card, isFlipped, onFlip, onRight, onWrong }:
           <span style={{ fontSize: '1.5rem', fontWeight: 600 }}>{card.english}</span>
         </div>
       </div>
+      {/* Right/Wrong only after flip; stopPropagation so clicking them doesn't flip again. */}
       {isFlipped && (
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1rem' }}>
           <button
