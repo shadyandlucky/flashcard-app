@@ -59,11 +59,25 @@ export default function QuizPage() {
     );
   }
 
+  const done = index >= cards.length;
+  if (done) {
+    return (
+      <main style={pageMain}>
+        <h1 style={heading}>Quiz complete</h1>
+        <p style={subtext}>You've gone through all {cards.length} cards.</p>
+        <nav style={navColumn}>
+          <Link to={ROUTES.QUIZ_CATEGORY} style={buttonLink}>Choose another quiz</Link>
+          <Link to={ROUTES.HOME} style={linkSecondary}>← Back to Home</Link>
+        </nav>
+      </main>
+    );
+  }
+
   const card = cards[index];
   const isMultipleChoice = quizType === 'multiple-choice';
   const shuffledOptions = useMemo(
     () => (isMultipleChoice && card.quiz.type === 'multiple-choice' ? shuffle(card.quiz.options) : []),
-    [card?.spanish, isMultipleChoice]
+    [card.spanish, isMultipleChoice]
   );
 
   const handleNext = () => {
@@ -87,20 +101,6 @@ export default function QuizPage() {
     recordResult(category, correct);
     setFeedback({ correct, correctAnswer: card.english });
   };
-
-  const done = index >= cards.length;
-  if (done) {
-    return (
-      <main style={pageMain}>
-        <h1 style={heading}>Quiz complete</h1>
-        <p style={subtext}>You’ve gone through all {cards.length} cards.</p>
-        <nav style={navColumn}>
-          <Link to={ROUTES.QUIZ_CATEGORY} style={buttonLink}>Choose another quiz</Link>
-          <Link to={ROUTES.HOME} style={linkSecondary}>← Back to Home</Link>
-        </nav>
-      </main>
-    );
-  }
 
   return (
     <main style={pageMain}>
