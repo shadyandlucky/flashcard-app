@@ -14,6 +14,7 @@ npm-debug.log*
 # Editor
 .vscode/*
 !.vscode/extensions.json
+.cursor/
 .idea
 *.swp
 *.swo
