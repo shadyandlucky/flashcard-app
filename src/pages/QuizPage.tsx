@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useParams, Link, Navigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getCardsByCategory } from '../data/flashcards';
 import { isCategory } from '../data/types';
 import { useStats } from '../context/StatsContext';
@@ -60,20 +60,38 @@ export default function QuizPage() {
   }
 
   const done = index >= cards.length;
-  if (done) {
-    return <Navigate to={ROUTES.QUIZ_COMPLETE} state={{ count: cards.length }} replace />;
-  }
-
   const card = cards[index];
-  if (!card) {
-    return <Navigate to={ROUTES.QUIZ_COMPLETE} state={{ count: cards.length }} replace />;
-  }
-
   const isMultipleChoice = quizType === 'multiple-choice';
+  // Use a valid card for useMemo so we always call the same hooks (Rules of Hooks).
+  const cardForOptions = card ?? cards[0];
   const shuffledOptions = useMemo(
-    () => (isMultipleChoice && card.quiz.type === 'multiple-choice' ? shuffle(card.quiz.options) : []),
-    [card.spanish, isMultipleChoice]
+    () =>
+      cardForOptions &&
+      isMultipleChoice &&
+      cardForOptions.quiz.type === 'multiple-choice'
+        ? shuffle([...cardForOptions.quiz.options])
+        : [],
+    [cardForOptions?.spanish, isMultipleChoice]
   );
+
+  if (done || !card) {
+    return (
+      <main style={pageMain}>
+        <h1 style={heading}>Quiz complete</h1>
+        <p style={subtext}>
+          You&apos;ve gone through all {cards.length} cards. Great job!
+        </p>
+        <nav style={navColumn}>
+          <Link to={ROUTES.HOME} style={buttonLink}>
+            ← Back to Main Page
+          </Link>
+          <Link to={ROUTES.QUIZ_CATEGORY} style={linkSecondary}>
+            Choose another quiz
+          </Link>
+        </nav>
+      </main>
+    );
+  }
 
   const handleNext = () => {
     setFeedback(null);
