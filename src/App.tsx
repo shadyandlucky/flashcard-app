@@ -5,8 +5,10 @@ import CategorySelectionPage from './pages/CategorySelectionPage';
 import StudyPage from './pages/StudyPage';
 import RedoPage from './pages/RedoPage';
 import StatsPage from './pages/StatsPage';
+import QuizSelectionPage from './pages/QuizSelectionPage';
+import QuizPage from './pages/QuizPage';
 
-/** Root router: home, category selection (study/quiz), study session, redo, stats, and quiz placeholder. */
+/** Root router: home, category selection (study/quiz), study session, redo, stats, quiz selection, and quiz session. */
 function App() {
   return (
     <Routes>
@@ -14,8 +16,8 @@ function App() {
       <Route path={ROUTES.STUDY_CATEGORY} element={<CategorySelectionPage />} />
       <Route path={ROUTES.STUDY_CATEGORY_PARAM} element={<StudyPage />} />
       <Route path={ROUTES.STUDY_REDO} element={<RedoPage />} />
-      <Route path={ROUTES.QUIZ_CATEGORY} element={<CategorySelectionPage />} />
-      <Route path={ROUTES.QUIZ_CATEGORY_PARAM} element={<div>Quiz session — Phase 4</div>} />
+      <Route path={ROUTES.QUIZ_CATEGORY} element={<QuizSelectionPage />} />
+      <Route path={ROUTES.QUIZ_SESSION} element={<QuizPage />} />
       <Route path={ROUTES.STATS} element={<StatsPage />} />
     </Routes>
   );
