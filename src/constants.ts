@@ -9,6 +9,7 @@ export const ROUTES = {
   QUIZ_CATEGORY: '/quiz/category',
   QUIZ_CATEGORY_PARAM: '/quiz/category/:category',
   QUIZ_SESSION: '/quiz/category/:category/:quizType',
+  QUIZ_COMPLETE: '/quiz/complete',
   STATS: '/stats',
 } as const;
 

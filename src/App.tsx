@@ -7,8 +7,9 @@ import RedoPage from './pages/RedoPage';
 import StatsPage from './pages/StatsPage';
 import QuizSelectionPage from './pages/QuizSelectionPage';
 import QuizPage from './pages/QuizPage';
+import QuizCompletePage from './pages/QuizCompletePage';
 
-/** Root router: home, category selection (study/quiz), study session, redo, stats, quiz selection, and quiz session. */
+/** Root router: home, category selection (study/quiz), study session, redo, stats, quiz selection, quiz session, quiz complete. */
 function App() {
   return (
     <Routes>
@@ -18,6 +19,7 @@ function App() {
       <Route path={ROUTES.STUDY_REDO} element={<RedoPage />} />
       <Route path={ROUTES.QUIZ_CATEGORY} element={<QuizSelectionPage />} />
       <Route path={ROUTES.QUIZ_SESSION} element={<QuizPage />} />
+      <Route path={ROUTES.QUIZ_COMPLETE} element={<QuizCompletePage />} />
       <Route path={ROUTES.STATS} element={<StatsPage />} />
     </Routes>
   );
