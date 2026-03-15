@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getCardsByCategory } from '../data/flashcards';
 import { isCategory } from '../data/types';
+import { useStats } from '../context/StatsContext';
 import type { QuizTypeSlug } from '../constants';
 import { ROUTES } from '../constants';
 import {
@@ -32,6 +33,7 @@ function shuffle<T>(arr: T[]): T[] {
 
 export default function QuizPage() {
   const { category, quizType } = useParams<{ category: string; quizType: string }>();
+  const { recordResult } = useStats();
   const [index, setIndex] = useState(0);
   const [feedback, setFeedback] = useState<{ correct: boolean; correctAnswer: string } | null>(null);
   const [fillInput, setFillInput] = useState('');
@@ -73,6 +75,7 @@ export default function QuizPage() {
   const handleMultipleChoiceClick = (option: string) => {
     if (feedback) return;
     const correct = option === card.english;
+    recordResult(category, correct);
     setFeedback({ correct, correctAnswer: card.english });
   };
 
@@ -81,6 +84,7 @@ export default function QuizPage() {
     if (feedback) return;
     const normalized = fillInput.trim().toLowerCase();
     const correct = normalized === card.english.toLowerCase();
+    recordResult(category, correct);
     setFeedback({ correct, correctAnswer: card.english });
   };
 

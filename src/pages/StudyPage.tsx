@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ROUTES } from '../constants';
 import { useWrongCards } from '../context/WrongCardsContext';
+import { useStats } from '../context/StatsContext';
 import { getCardsByCategory } from '../data/flashcards';
 import { isCategory, CATEGORY_LABELS, type Flashcard } from '../data/types';
 import FlashcardComponent from '../components/Flashcard';
@@ -23,6 +24,7 @@ import {
 export default function StudyPage() {
   const { category } = useParams<{ category: string }>();
   const { setWrongCardsFromSession } = useWrongCards();
+  const { recordResult } = useStats();
   const [wrongCards, setWrongCards] = useState<Flashcard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -39,12 +41,16 @@ export default function StudyPage() {
   const isDone = isValidCategory && currentIndex >= categoryCards.length;
 
   const handleRight = () => {
+    if (currentCard) recordResult(currentCard.category, true);
     setIsFlipped(false);
     setCurrentIndex((i) => i + 1);
   };
 
   const handleWrong = () => {
-    if (currentCard) setWrongCards((prev) => [...prev, currentCard]);
+    if (currentCard) {
+      setWrongCards((prev) => [...prev, currentCard]);
+      recordResult(currentCard.category, false);
+    }
     setIsFlipped(false);
     setCurrentIndex((i) => i + 1);
   };

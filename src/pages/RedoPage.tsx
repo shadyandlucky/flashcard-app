@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants';
 import { useWrongCards } from '../context/WrongCardsContext';
+import { useStats } from '../context/StatsContext';
 import FlashcardComponent from '../components/Flashcard';
 import {
   pageMain,
@@ -20,6 +21,7 @@ import {
  */
 export default function RedoPage() {
   const { wrongCards, clearWrongCards } = useWrongCards();
+  const { recordResult } = useStats();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -32,11 +34,13 @@ export default function RedoPage() {
   }, [wrongCards.length]);
 
   const handleRight = () => {
+    if (currentCard) recordResult(currentCard.category, true);
     setIsFlipped(false);
     setCurrentIndex((i) => i + 1);
   };
 
   const handleWrong = () => {
+    if (currentCard) recordResult(currentCard.category, false);
     setIsFlipped(false);
     setCurrentIndex((i) => i + 1);
   };
