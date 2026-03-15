@@ -33,3 +33,5 @@ test-results/
 playwright-report/
 blob-report/
 .playwright-browsers/
+.vercel
+.env*.local

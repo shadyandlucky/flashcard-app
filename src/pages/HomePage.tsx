@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants';
+import { useWrongCards } from '../context/WrongCardsContext';
 import {
   pageMain,
   heading,
@@ -8,10 +9,13 @@ import {
   buttonLinkStudy,
   buttonLinkQuiz,
   buttonLinkStats,
+  linkSecondary,
 } from '../styles';
 
-/** Landing page: app title and links to Study, Quiz, and Stats. */
+/** Landing page: app title and links to Study, Quiz, Stats; reset wrong cards when list exists. */
 export default function HomePage() {
+  const { wrongCards, clearWrongCards } = useWrongCards();
+
   return (
     <main style={pageMain}>
       <h1 style={heading}>Spanish Flashcards</h1>
@@ -27,6 +31,30 @@ export default function HomePage() {
           Stats Page
         </Link>
       </nav>
+      {wrongCards.length > 0 && (
+        <p style={{ marginTop: '1.5rem', fontSize: '0.875rem', color: '#94a3b8' }}>
+          You have {wrongCards.length} wrong card(s) saved.{' '}
+          <Link to={ROUTES.STUDY_REDO} style={linkSecondary}>
+            Redo wrong cards
+          </Link>
+          {' · '}
+          <button
+            type="button"
+            onClick={clearWrongCards}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              font: 'inherit',
+              color: 'inherit',
+              textDecoration: 'underline',
+              cursor: 'pointer',
+            }}
+          >
+            Reset wrong cards list
+          </button>
+        </p>
+      )}
     </main>
   );
 }

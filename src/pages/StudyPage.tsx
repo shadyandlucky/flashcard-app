@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ROUTES } from '../constants';
+import { useWrongCards } from '../context/WrongCardsContext';
 import { getCardsByCategory } from '../data/flashcards';
 import { isCategory, CATEGORY_LABELS, type Flashcard } from '../data/types';
 import FlashcardComponent from '../components/Flashcard';
@@ -21,9 +22,16 @@ import {
  */
 export default function StudyPage() {
   const { category } = useParams<{ category: string }>();
+  const { setWrongCardsFromSession } = useWrongCards();
   const [wrongCards, setWrongCards] = useState<Flashcard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+
+  useEffect(() => {
+    setWrongCards([]);
+    setCurrentIndex(0);
+    setIsFlipped(false);
+  }, [category]);
 
   const categoryCards = getCardsByCategory(category);
   const isValidCategory = isCategory(category);
@@ -52,6 +60,12 @@ export default function StudyPage() {
     );
   }
 
+  useEffect(() => {
+    if (isDone && wrongCards.length > 0) {
+      setWrongCardsFromSession(wrongCards);
+    }
+  }, [isDone, wrongCards, setWrongCardsFromSession]);
+
   if (isDone) {
     const label = CATEGORY_LABELS[category];
     return (
@@ -60,10 +74,15 @@ export default function StudyPage() {
         <p style={subtextTight}>
           You reviewed all {categoryCards.length} cards in {label}.
           {wrongCards.length > 0 && (
-            <span> {wrongCards.length} marked as wrong (Redo mode in Phase 3).</span>
+            <span> {wrongCards.length} marked as wrong.</span>
           )}
         </p>
         <div style={navColumnTight}>
+          {wrongCards.length > 0 && (
+            <Link to={ROUTES.STUDY_REDO} style={buttonLinkSmall}>
+              Redo Wrong Cards
+            </Link>
+          )}
           <Link to={ROUTES.STUDY_CATEGORY} style={buttonLinkSmall}>
             Study another category
           </Link>

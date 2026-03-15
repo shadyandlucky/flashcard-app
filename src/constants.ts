@@ -5,6 +5,7 @@ export const ROUTES = {
   HOME: '/',
   STUDY_CATEGORY: '/study/category',
   STUDY_CATEGORY_PARAM: '/study/category/:category',
+  STUDY_REDO: '/study/redo',
   QUIZ_CATEGORY: '/quiz/category',
   QUIZ_CATEGORY_PARAM: '/quiz/category/:category',
   STATS: '/stats',
