@@ -54,7 +54,7 @@ export const buttonLink: CSSProperties = {
 };
 
 export const buttonLinkStudy: CSSProperties = { ...buttonLink, background: '#3b82f6' };
-export const buttonLinkQuiz: CSSProperties = { ...buttonLink, background: '#8b5cf6' };
+export const buttonLinkQuiz: CSSProperties = { ...buttonLink, background: '#db2777' };
 export const buttonLinkStats: CSSProperties = { ...buttonLink, background: '#059669' };
 
 export const buttonLinkSmall: CSSProperties = {
